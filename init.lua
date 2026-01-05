@@ -42,3 +42,6 @@ end
 
 -- 行数表示
 vim.opt.number = true
+
+-- キー設定
+vim.api.nvim_create_user_command('Q', 'q<bang>', { bang = true })
