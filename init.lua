@@ -45,3 +45,8 @@ vim.opt.number = true
 
 -- キー設定
 vim.api.nvim_create_user_command('Q', 'q<bang>', { bang = true })
+
+-- 診断表示のキーマップ
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
