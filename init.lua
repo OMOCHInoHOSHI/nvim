@@ -50,3 +50,18 @@ vim.api.nvim_create_user_command('Q', 'q<bang>', { bang = true })
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+
+-- 診断メッセージをクリップボードにコピー
+vim.keymap.set("n", "dc", function()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
+  if #diagnostics > 0 then
+    local messages = {}
+    for _, d in ipairs(diagnostics) do
+      table.insert(messages, d.message)
+    end
+    vim.fn.setreg("+", table.concat(messages, "\n"))
+    print("診断をコピーしました")
+  else
+    print("この行に診断はありません")
+  end
+end, { desc = "Copy diagnostic to clipboard" })
