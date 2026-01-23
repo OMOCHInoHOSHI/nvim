@@ -6,6 +6,14 @@ return {
       "nvim-lua/plenary.nvim",
     },
     config = function()
+      require("telescope").setup({
+        defaults = {
+          layout_config = {
+            preview_cutoff = 0, -- どんなに画面が狭くてもプレビューを隠さない
+          },
+        },
+      })
+
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
