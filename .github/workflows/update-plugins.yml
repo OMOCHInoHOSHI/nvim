@@ -3,9 +3,6 @@ name: Update Plugins
 on:
   schedule:
     - cron: '0 0 * * 0' # 毎週日曜日 00:00 (UTC) に実行 日本時間では日曜日の午前 9:00
-  push:
-    branches:
-      - auto-update # テスト用にこのブランチへのpushでも起動
   workflow_dispatch:      # 手動実行ボタンを有効化
 
 jobs:
@@ -67,5 +64,7 @@ jobs:
           commit-message: "chore(plugins): update lazy-lock.json"
           title: "🚀 Plugin Updates"
           body: ${{ steps.pr_body.outputs.body }}
+          base: main  # PR の送り先を main に固定
           branch: "update-plugins"
           delete-branch: true
+
