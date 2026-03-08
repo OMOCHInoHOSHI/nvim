@@ -30,9 +30,14 @@ jobs:
 
       - name: Update plugins
         run: |
+          # Neovim が設定ファイルを見つけられるように ~/.config/nvim へのリンクを作成
+          mkdir -p ~/.config
+          ln -s $(pwd) ~/.config/nvim
+
           # 既存のロックファイルを削除して、バージョン固定を強制的に解除
           rm -f lazy-lock.json
-          # sync で最新のプラグインをインストール
+
+          # sync でプラグインをインストール
           nvim --headless "+Lazy! sync" +qa
           # update で最新のロックファイルを再生成
           nvim --headless "+Lazy! update" +qa
