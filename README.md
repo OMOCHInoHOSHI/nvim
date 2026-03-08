@@ -2,6 +2,8 @@
 
 現在はWSL2(Ubuntu)とMacで共有
 
+プラグイン一覧はPLUGINS.mdを参照
+
 # nvim-config
 
 Neovimの設定ファイル一式です。現在はWSL2(Ubuntu)とMacで共有しています。
