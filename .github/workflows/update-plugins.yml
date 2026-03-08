@@ -2,10 +2,10 @@ name: Update Plugins
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 毎日 00:00 (UTC) に実行
+    - cron: '0 0 * * 0' # 毎週日曜日 00:00 (UTC) に実行 日本時間では日曜日の午前 9:00
   push:
     branches:
-      - auto-update # テスト用にこのブランチへのpushで起動
+      - auto-update # テスト用にこのブランチへのpushでも起動
   workflow_dispatch:      # 手動実行ボタンを有効化
 
 jobs:
