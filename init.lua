@@ -16,27 +16,36 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- これにより、新しいプラグインを追加したい時は lua/plugins/ にファイルを作るだけでよくなります
-require("lazy").setup("plugins")
+-- Headlessモード（GitHub Actionsなど）かどうかを判定
+local is_headless = #vim.api.nvim_list_uis() == 0
 
--- クリップボード
-vim.opt.clipboard = 'unnamedplus'
+-- 2. lazy.nvim の設定
+require("lazy").setup("plugins", {
+  checker = {
+    enabled = true, -- 起動時にアップデートをチェックする
+    notify = false, -- 通知は任意（LSP起動時などに邪魔にならないよう false を推奨）
+  },
+})
 
+-- クリップボード (Headlessモードではスキップしてエラー回避)
+if not is_headless then
+  vim.opt.clipboard = 'unnamedplus'
 
--- WSL環境の場合のみカスタム設定
-if vim.fn.has('wsl') == 1 then
-	vim.g.clipboard = {
-		name = 'WslClipboard',
-		copy = {
-			['+'] = { 'sh', '-c', 'iconv -t UTF-16LE | clip.exe' },
-			['*'] = { 'sh', '-c', 'iconv -t UTF-16LE | clip.exe' },
-		},
-		paste = {
-			['+'] = { 'sh', '-c', 'powershell.exe -NoProfile -c "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" | sed "s/\\r$//"' },
-			['*'] = { 'sh', '-c', 'powershell.exe -NoProfile -c "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" | sed "s/\\r$//"' },
-		},
-		cache_enabled = 0,
-	}
+  -- WSL環境の場合のみカスタム設定
+  if vim.fn.has('wsl') == 1 then
+    vim.g.clipboard = {
+      name = 'WslClipboard',
+      copy = {
+        ['+'] = { 'sh', '-c', 'iconv -t UTF-16LE | clip.exe' },
+        ['*'] = { 'sh', '-c', 'iconv -t UTF-16LE | clip.exe' },
+      },
+      paste = {
+        ['+'] = { 'sh', '-c', 'powershell.exe -NoProfile -c "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" | sed "s/\\r$//"' },
+        ['*'] = { 'sh', '-c', 'powershell.exe -NoProfile -c "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" | sed "s/\\r$//"' },
+      },
+      cache_enabled = 0,
+    }
+  end
 end
 
 
