@@ -30,8 +30,12 @@ jobs:
 
       - name: Update plugins
         run: |
-          # sync コマンドは同期的（完了を待つ）かつ、ヘッドレス環境向けに最適化されています
+          # 既存のロックファイルを削除して、バージョン固定を強制的に解除
+          rm -f lazy-lock.json
+          # sync で最新のプラグインをインストール
           nvim --headless "+Lazy! sync" +qa
+          # update で最新のロックファイルを再生成
+          nvim --headless "+Lazy! update" +qa
 
       - name: Check for changes (Debug)
         run: |
