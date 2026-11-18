@@ -4,9 +4,12 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       -- リポジトリ名を取得し、最後にスラッシュを付ける関数
+      -- git コマンドを使わず .git を親方向に探す（外部プロセス・シェル不要）
+      --   旧実装の `git ... 2>/dev/null` は Windows の既定シェル cmd.exe では動かず、
+      --   ステータスライン再描画のたびにプロセスを起動するので Windows では特に重かった
       local function get_repo_name()
-        local git_root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
-        if git_root and git_root ~= "" then
+        local git_root = vim.fs.root(0, ".git") or vim.fs.root(vim.fn.getcwd(), ".git")
+        if git_root then
           -- ディレクトリ名を取得し、最後に / を追加
           return vim.fn.fnamemodify(git_root, ":t") .. "/"
         end

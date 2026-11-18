@@ -1,0 +1,2 @@
+# Windows (core.autocrlf=true) で clone しても改行を LF に固定する
+* text=auto eol=lf

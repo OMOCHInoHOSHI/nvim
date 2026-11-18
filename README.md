@@ -1,12 +1,12 @@
 # コメント
 
-現在はWSL2(Ubuntu)とMacで共有
+現在はWSL2(Ubuntu)・Mac・Windows(ネイティブ)で共有
 
 プラグイン一覧はPLUGINS.mdを参照
 
 # nvim-config
 
-Neovimの設定ファイル一式です。現在はWSL2(Ubuntu)とMacで共有しています。
+Neovimの設定ファイル一式です。現在はWSL2(Ubuntu)・Mac・Windows(ネイティブ)で共有しています。
 
 ## セットアップ
 
@@ -25,6 +25,7 @@ LSPの実行や高速な検索、プラグイン管理のために、OS側に以
 - **ビルドツール (`gcc`, `make` など)**: `treesitter` のパーサーコンパイルに使用。
 - **Unzip / Curl / Tar**: `Mason` による外部ツールの自動ダウンロードに必須。
 - **Python3 & venv**: 一部の LSP やツールを Mason でインストールする際に必要になる場合があります。
+- **tree-sitter CLI**（0.26.1 以上。**npm 版は不可**）と **C コンパイラ**: `nvim-treesitter`（main ブランチ）のパーサーのビルドに必須。
 
 #### インストールコマンド例
 
@@ -41,6 +42,20 @@ sudo apt install -y git curl unzip tar ripgrep fd-find nodejs npm golang build-e
 brew install git curl ripgrep fd node go
 ```
 
+**Windows（ネイティブ）:** PowerShell または Git Bash で実行（1行ずつ）
+```bash
+winget install Neovim.Neovim
+winget install BurntSushi.ripgrep.MSVC
+winget install sharkdp.fd
+winget install OpenJS.NodeJS.LTS
+winget install GoLang.Go
+winget install tree-sitter.tree-sitter-cli
+```
+> [!NOTE]
+> - C コンパイラは Visual Studio（Build Tools 可）の「C++ によるデスクトップ開発」（MSVC）を使う。
+> - `git`・`tar`・`curl` は Git for Windows / Windows 標準のものでよい。
+> - クリップボードは Windows 版 Neovim に同梱の `win32yank.exe` が自動で使われるので設定不要。
+
 ### 2. Nerd Font のインストール (推奨)
 
 `neo-tree` や `lualine` でアイコンを正しく表示するために、**Nerd Font** のインストールを強く推奨します。
@@ -55,6 +70,8 @@ brew install git curl ripgrep fd node go
 ```bash
 # 設定ディレクトリへクローン (既存の設定がある場合はバックアップしてください)
 # git clone <this-repo-url> ~/.config/nvim
+# Windows（ネイティブ）の設定ディレクトリは %LOCALAPPDATA%\nvim（Git Bash なら下記）
+# git clone <this-repo-url> "$(cygpath "$LOCALAPPDATA")/nvim"
 
 # Neovimを起動
 nvim
